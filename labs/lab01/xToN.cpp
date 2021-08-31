@@ -24,11 +24,9 @@ int main() {
 	int base = 0;
 	int power = 0;
 	int answer = 0;
-	cout << "Base: ";
 	cin >> base;
-	cout << "Power: ";
 	cin >> power;
 	answer = xton(base, power);
-	cout << "Answer: " << answer << endl;	
+	cout << answer << endl;	
 	return 0;
 }
