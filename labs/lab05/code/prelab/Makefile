@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -g
 OBJECTS = TreeCalc.o TreeCalcTest.o TreeNode.o 
 
 
-main: $(OBJECTS) 
+main: $(OBJECTS)
 	$(CXX) $(OBJECTS)
 	
 TreeCalc.o: TreeCalc.cpp TreeCalc.h TreeNode.h

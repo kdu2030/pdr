@@ -51,6 +51,10 @@ private:
     void printTree(BinaryNode* root, Trunk* prev, bool isRight);
 
     // Any other methods you need...
+    BinaryNode* find(BinaryNode* node, const string& x) const;
+    void insert(BinaryNode*& node, const string& x);
+    string pathTo(BinaryNode* node, const string& x) const;    
+    int numNodes(BinaryNode* node) const;
 };
 
 #endif

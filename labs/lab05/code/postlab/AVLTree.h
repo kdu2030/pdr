@@ -64,6 +64,11 @@ private:
     void printTree(AVLNode* root, Trunk* prev, bool isRight);
 
     // Any other methods you need...
+    int findBalance(AVLNode*& node) const;
+	void insert(AVLNode*& node, const string& x);
+	string pathTo(AVLNode* node, const string& x) const;
+	AVLNode* find(AVLNode* node, const string& x) const;
+	int numNodes(AVLNode* node) const;
 };
 
 // max returns the greater of two integers.
