@@ -1,13 +1,13 @@
 CXX = clang++
-CXXFLAGS = -Wall -g -O2
+CXXFLAGS = -O2
 IFLAGS = -O2 -c
 OBJECTS = hashTable.o wordPuzzle.o timer.o
 
 
 main: $(OBJECTS)
-	$(CXX) $(IFLAGS) hashTable.o
-	$(CXX) $(IFLAGS) wordPuzzle.o
-	$(CXX) $(IFLAGS) timer.o
+	$(CXX) $(IFLAGS) hashTable.cpp
+	$(CXX) $(IFLAGS) wordPuzzle.cpp
+	$(CXX) $(IFLAGS) timer.cpp
 	$(CXX) $(CXXFLAGS) $(OBJECTS)
 	
 hashTable.o: hashTable.cpp hashTable.h

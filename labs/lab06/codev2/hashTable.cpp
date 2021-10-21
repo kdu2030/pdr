@@ -7,26 +7,21 @@ using namespace std;
 
 //TODO: Calculate powers of 37 when creating hashTable
 
-void calcPows(int maxPow);
+vector<int> calcPows(int maxPow);
 
 hashTable::hashTable(){
    table = vector<list<string>>(113);
-   vector<int> pows = calcPows(22);
+   pows = calcPows(22);
 }
 
 
 bool checkprime(unsigned int p);
 int getNextPrime (unsigned int n); 
 
-
-hashTable::hashTable(unsigned int numItems, int maxLength){
-   int size = getNextPrime(numItems);
-   table = vector<list<string>>(size);
-}
-
-hashTable::hashTable(unsigned int numItems, int maxLength, double loadFactor){
+hashTable::hashTable(unsigned int numItems, double loadFactor){
    int size = (int)(getNextPrime(numItems) * (1/loadFactor));
    table = vector<list<string>>(size);
+   pows = calcPows(22);
 }
 
 //Populates an array with powers of 37 for the hash function
@@ -65,7 +60,7 @@ unsigned int hashTable::hash(string value){
    unsigned int index = 0;
    int tableSize = table.size();
    for(int i = 0; i < value.length(); i++){
-      index += value.at(i) * pow(37, i);
+      index += value.at(i) * pows.at(i);
    }
    return index%tableSize;
 }
@@ -80,7 +75,7 @@ void hashTable::insert(string value){
 */
 int hashTable::find(string value){
    unsigned int index = hash(value);
-   //If the hash bucket is 0
+   //If the hash bucket's length is 0
    if(table.at(index).size() == 0){
       return -1;
    }

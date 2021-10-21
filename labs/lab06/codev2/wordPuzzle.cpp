@@ -179,7 +179,6 @@ void findWords(hashTable& dict, int rowLength, int colLength){
                if(phrase == lastWordMatched){
                   break;
                }
-				//phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)
                else if(phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)){
                   lastWordMatched = phrase;
                   cout << getDirectStr(i) << " (" << row << ", " << col  << "): "<<  phrase << endl;
@@ -214,29 +213,23 @@ string getDirectStr(int direction){
     return "";
 }
 
-int[] getNumLines(string dictPath){
+int getNumLines(string dictPath){
    int lines = 0;
-   int maxLength;
    string line = "";  
    ifstream file(dictPath);
-   //Get the length of the worst word
-   maxLength = getline(file, line).length();
-   while(getline(file, line)){
-	if(line.length() > maxLength){
-		maxLength = line.length();
-	}	
-	line++;		
+   while(getline(file, line)){	
+	lines++;		
    } 
    file.close();
-   return {lines, maxLength};
+   return lines;
 }
 
 hashTable createDict(string dictPath){
 	//ifstream is for reading the file only
 	ifstream file(dictPath);
 	string line = "";
-	int dictInfo[] = getNumLines(dictPath);
-	hashTable wordDict(dictInfo[0], dictInfo[1], 0.75);
+	int dictInfo = getNumLines(dictPath);
+	hashTable wordDict(dictInfo, 0.75);
    
 	//gets every line of the file
 	while(getline(file, line)){

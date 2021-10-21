@@ -11,14 +11,14 @@ using namespace std;
 class hashTable{
 	public:
 		hashTable();
-		hashTable(unsigned int numItems, int maxLength);
-		hashTable(unsigned int numItems, int maxLength, double loadFactor);
+		hashTable(unsigned int numItems);
+		hashTable(unsigned int numItems, double loadFactor);
 		unsigned int hash(string value);
 		void insert(string value);
 		int find(string value);
 	private:
 	  vector<list<string>> table;
-	  vector<int> pows[];
+	  vector<int> pows;
 };
 
 #endif
