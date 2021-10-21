@@ -214,22 +214,29 @@ string getDirectStr(int direction){
     return "";
 }
 
-int getNumLines(string dictPath){
+int[] getNumLines(string dictPath){
    int lines = 0;
+   int maxLength;
    string line = "";  
    ifstream file(dictPath);
+   //Get the length of the worst word
+   maxLength = getline(file, line).length();
    while(getline(file, line)){
-		lines++;
-	} 
+	if(line.length() > maxLength){
+		maxLength = line.length();
+	}	
+	line++;		
+   } 
    file.close();
-   return lines;
+   return {lines, maxLength};
 }
 
 hashTable createDict(string dictPath){
 	//ifstream is for reading the file only
 	ifstream file(dictPath);
 	string line = "";
-	hashTable wordDict(getNumLines(dictPath), 0.75);
+	int dictInfo[] = getNumLines(dictPath);
+	hashTable wordDict(dictInfo[0], dictInfo[1], 0.75);
    
 	//gets every line of the file
 	while(getline(file, line)){

@@ -5,22 +5,37 @@
 #include "hashTable.h"
 using namespace std;
 
+//TODO: Calculate powers of 37 when creating hashTable
+
+void calcPows(int maxPow);
+
 hashTable::hashTable(){
    table = vector<list<string>>(113);
+   vector<int> pows = calcPows(22);
 }
+
 
 bool checkprime(unsigned int p);
 int getNextPrime (unsigned int n); 
 
 
-hashTable::hashTable(unsigned int numItems){
+hashTable::hashTable(unsigned int numItems, int maxLength){
    int size = getNextPrime(numItems);
    table = vector<list<string>>(size);
 }
 
-hashTable::hashTable(unsigned int numItems, double loadFactor){
+hashTable::hashTable(unsigned int numItems, int maxLength, double loadFactor){
    int size = (int)(getNextPrime(numItems) * (1/loadFactor));
    table = vector<list<string>>(size);
+}
+
+//Populates an array with powers of 37 for the hash function
+vector<int> calcPows(int maxPow){
+	vector<int> pows;
+	for(int i = 0; i < maxPow; i++){
+		pows.push_back(pow(37, i));
+	}
+	return pows;
 }
 
 // yes, there are much faster -- and much better -- ways to check if a
