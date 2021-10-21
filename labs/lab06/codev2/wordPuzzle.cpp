@@ -154,14 +154,7 @@ string getWordInGrid (int startRow, int startCol, int dir, int len,
 string getDirectStr(int direction);
 
 void findWords(hashTable& dict, int rowLength, int colLength){
-   int maxLength = 0;
-   //Finds max(rowLength, colLength)
-   if(rowLength > colLength){
-      maxLength = rowLength;
-   }
-   else{
-      maxLength = colLength;
-   }
+
    
    int numWords = 0;
    
@@ -173,13 +166,14 @@ void findWords(hashTable& dict, int rowLength, int colLength){
          for(int i = 0; i < 8; i++){
             //If this works, don't change the location of lastWordMatched.
             string lastWordMatched = ""; 
-            for(int j = 3; j <= maxLength; j++){
+            for(int j = 3; j <= 22; j++){
                phrase = getWordInGrid(row, col, i, j, rowLength, colLength);
                //If the word length is within parameters
                if(phrase == lastWordMatched){
                   break;
                }
-               else if(phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)){
+			   //phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)
+               else if(dict.find(phrase) != -1){
                   lastWordMatched = phrase;
                   cout << getDirectStr(i) << " (" << row << ", " << col  << "): "<<  phrase << endl;
                   numWords++;
