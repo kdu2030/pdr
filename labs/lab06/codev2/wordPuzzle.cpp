@@ -179,6 +179,7 @@ void findWords(hashTable& dict, int rowLength, int colLength){
                if(phrase == lastWordMatched){
                   break;
                }
+				//phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)
                else if(phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)){
                   lastWordMatched = phrase;
                   cout << getDirectStr(i) << " (" << row << ", " << col  << "): "<<  phrase << endl;

@@ -6,9 +6,7 @@
 */
 #include <iostream>
 #include <fstream>
-//#include <unordered_set>
-#include "hashTable.h" 
-#include "timer.h"
+#include <unordered_set>
 
 using namespace std;
 
@@ -41,9 +39,11 @@ bool readInGrid(string filename, int& rows, int& cols) {
 
     // first comes the number of rows
     file >> rows;
+    cout << "There are " << rows << " rows." << endl;
 
     // then the columns
     file >> cols;
+    cout << "There are " << cols << " cols." << endl;
 
     // and finally the grid itself
     string data;
@@ -59,7 +59,9 @@ bool readInGrid(string filename, int& rows, int& cols) {
     for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
             grid[r][c] = data[pos++];
+            cout << grid[r][c];
         }
+        cout << endl;
     }
     return true;
 }
@@ -153,7 +155,7 @@ string getWordInGrid (int startRow, int startCol, int dir, int len,
 
 string getDirectStr(int direction);
 
-void findWords(hashTable& dict, int rowLength, int colLength){
+void findWords(unordered_set<string>& dict, int rowLength, int colLength){
    int maxLength = 0;
    //Finds max(rowLength, colLength)
    if(rowLength > colLength){
@@ -179,16 +181,16 @@ void findWords(hashTable& dict, int rowLength, int colLength){
                if(phrase == lastWordMatched){
                   break;
                }
-               else if(phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)){
+               else if(phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != dict.end())){
                   lastWordMatched = phrase;
-                  cout << getDirectStr(i) << " (" << row << ", " << col  << "): "<<  phrase << endl;
+                  cout << getDirectStr(i) << "(" << row << "," << col  << "): "<<  phrase << endl;
                   numWords++;
                }
             }
          }
       }
    }
-   cout << numWords << " words found" << endl;
+   cout << numWords << " found" << endl;
 }
 
 string getDirectStr(int direction){
@@ -213,23 +215,13 @@ string getDirectStr(int direction){
     return "";
 }
 
-int getNumLines(string dictPath){
-   int lines = 0;
-   string line = "";  
-   ifstream file(dictPath);
-   while(getline(file, line)){
-		lines++;
-	} 
-   file.close();
-   return lines;
-}
-
-hashTable createDict(string dictPath){
+//Void for now, maybe return hashTable?
+unordered_set<string> createDict(string dictPath){
 	//ifstream is for reading the file only
 	ifstream file(dictPath);
 	string line = "";
-	hashTable wordDict(getNumLines(dictPath), 0.75);
-   
+	unordered_set<string> wordDict;
+
 	//gets every line of the file
 	while(getline(file, line)){
 		wordDict.insert(line);
@@ -240,8 +232,6 @@ hashTable createDict(string dictPath){
 	return wordDict;
 }
 
-
-
 int main(int argc, char* argv[]){
 	//in terminal: ./a.out <dictionary> <grid>
    if(argc != 3){
@@ -249,18 +239,15 @@ int main(int argc, char* argv[]){
       return 0;
    }
    string dictPath = argv[1];
-   timer watch;
    
    //Creates the dictionary
-	hashTable dict = createDict(dictPath);
+	unordered_set<string> dict = createDict(dictPath);
    
    //These will be changed by the readInGrid()
    int rows = 0;
    int cols = 0;
-   watch.start();
    readInGrid(argv[2], rows, cols);
    findWords(dict, rows, cols);
-   watch.stop();
-   cout << watch.getTime() << endl;
+   
 	return 0;
 }

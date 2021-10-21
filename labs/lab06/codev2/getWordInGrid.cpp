@@ -1,15 +1,17 @@
-/*
-*Name: Kevin Du
-*ID: kd5eyn
-*Date: 10/13/2021
-*Filename: wordPuzzle.cpp
-*/
+/** This file defines and demonstrates two necessary components for
+ * the hash table lab for CS 2150.  The first is the use of the
+ * getWordInGrid() function, which is used for retrieving a word in a
+ * grid of letters in one of the cardinal 8 directions (north,
+ * south-east, etc).  The second is the use of file streams to read in
+ * input from a file, specifically one formatted as per the lab 6
+ * guidelines.
+ *
+ * Written by Aaron Bloomfield, 2009
+ */
+
 #include <iostream>
 #include <fstream>
-//#include <unordered_set>
-#include "hashTable.h" 
-#include "timer.h"
-
+#include <string>
 using namespace std;
 
 // We create a 2-D array of some big size, and assume that the grid
@@ -17,6 +19,36 @@ using namespace std;
 #define MAXROWS 500
 #define MAXCOLS 500
 char grid[MAXROWS][MAXCOLS];
+
+// Forward declarations
+bool readInGrid(string filename, int& rows, int& cols);
+string getWordInGrid(int startRow, int startCol, int dir, int len,
+                     int numRows, int numCols);
+
+/** The main() function shows how to call both the readInGrid()
+ * function as well as the getWordInGrid() function.
+ */
+int main() {
+    // to hold the number of rows and cols in the input file
+    int rows, cols;
+
+    // attempt to read in the file
+    bool result = readInGrid("5x8.grid.txt", rows, cols);
+    // if there is an error, report it
+    if (!result) {
+        cout << "Error reading in file!" << endl;
+        return 1;
+    }
+
+    // Get a word (of length 10), starting at position (2,2) in the
+    // array, in each of the 8 directions
+    cout << endl;
+    for (int i = 0; i < 8; i++) {
+        cout << i << ": " << getWordInGrid(2, 2, i, 10, rows, cols) << endl;
+    }
+
+    return 0;
+}
 
 /** This function will read in a grid file, as per the format in the
  * CS 2150 lab 6 document, into a global grid[][] array.  It uses C++
@@ -41,9 +73,11 @@ bool readInGrid(string filename, int& rows, int& cols) {
 
     // first comes the number of rows
     file >> rows;
+    cout << "There are " << rows << " rows." << endl;
 
     // then the columns
     file >> cols;
+    cout << "There are " << cols << " cols." << endl;
 
     // and finally the grid itself
     string data;
@@ -59,7 +93,9 @@ bool readInGrid(string filename, int& rows, int& cols) {
     for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
             grid[r][c] = data[pos++];
+            cout << grid[r][c];
         }
+        cout << endl;
     }
     return true;
 }
@@ -149,118 +185,4 @@ string getWordInGrid (int startRow, int startCol, int dir, int len,
     }
 
     return output;
-}
-
-string getDirectStr(int direction);
-
-void findWords(hashTable& dict, int rowLength, int colLength){
-   int maxLength = 0;
-   //Finds max(rowLength, colLength)
-   if(rowLength > colLength){
-      maxLength = rowLength;
-   }
-   else{
-      maxLength = colLength;
-   }
-   
-   int numWords = 0;
-   
-   //NOTE: 4 four loops, might be place to optimize
-   //Iterate through the entire grid, checking each character
-   for(int row = 0; row < rowLength; row++){
-      for(int col = 0; col < colLength; col++){
-         string phrase = "";
-         for(int i = 0; i < 8; i++){
-            //If this works, don't change the location of lastWordMatched.
-            string lastWordMatched = ""; 
-            for(int j = 3; j <= maxLength; j++){
-               phrase = getWordInGrid(row, col, i, j, rowLength, colLength);
-               //If the word length is within parameters
-               if(phrase == lastWordMatched){
-                  break;
-               }
-               else if(phrase.length() >= 3 && (phrase.length() <= 22 && dict.find(phrase) != -1)){
-                  lastWordMatched = phrase;
-                  cout << getDirectStr(i) << " (" << row << ", " << col  << "): "<<  phrase << endl;
-                  numWords++;
-               }
-            }
-         }
-      }
-   }
-   cout << numWords << " words found" << endl;
-}
-
-string getDirectStr(int direction){
-   switch (direction) {
-      case 0:
-         return "N";
-      case 1:
-         return "NE";
-      case 2:
-         return "E";
-      case 3:
-         return  "SE";
-      case 4:
-         return "S";
-      case 5:
-         return "SW";
-      case 6:
-         return "W";
-      case 7:
-         return "NW";
-    }
-    return "";
-}
-
-int getNumLines(string dictPath){
-   int lines = 0;
-   string line = "";  
-   ifstream file(dictPath);
-   while(getline(file, line)){
-		lines++;
-	} 
-   file.close();
-   return lines;
-}
-
-hashTable createDict(string dictPath){
-	//ifstream is for reading the file only
-	ifstream file(dictPath);
-	string line = "";
-	hashTable wordDict(getNumLines(dictPath), 0.75);
-   
-	//gets every line of the file
-	while(getline(file, line)){
-		wordDict.insert(line);
-	}
-
-	//closes the file
-	file.close();
-	return wordDict;
-}
-
-
-
-int main(int argc, char* argv[]){
-	//in terminal: ./a.out <dictionary> <grid>
-   if(argc != 3){
-      cout << "Incorrect number of arguments" << endl;
-      return 0;
-   }
-   string dictPath = argv[1];
-   timer watch;
-   
-   //Creates the dictionary
-	hashTable dict = createDict(dictPath);
-   
-   //These will be changed by the readInGrid()
-   int rows = 0;
-   int cols = 0;
-   watch.start();
-   readInGrid(argv[2], rows, cols);
-   findWords(dict, rows, cols);
-   watch.stop();
-   cout << watch.getTime() << endl;
-	return 0;
 }
