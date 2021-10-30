@@ -1,0 +1,35 @@
+mem      locn      label       op          addr          comments
+
+C00E     000                  jmp         start          Jump to the start of the program
+0000     001      length      dw           0             declare int length
+0000     002        i         dw           0             declare int i
+0001     003        one       dw           1             declare int one
+0000     004        zero      dw           0             declare int zero
+4000     005       save       dw          4000        	declare int save
+3000     006		 access	   dw          3000           declare int access
+001E     007       basePoint  dw          001E           declare it basePoint (CHANGE)
+B000     008                                             do nothing
+B000     009                                             do nothing
+B000     00A                                             do nothing
+B000     00B                                             do nothing
+B000     00C                                             do nothing
+B000     00D                                             do nothing
+1000     00E       start     readH                       read in a hex digit into accumulator  1. Get length of array
+4001     00F                 store         length        store accumulator value into length
+3002     00G       loop1     load          i             load i into accumulator					  2. Get values in array - loop
+6001     010                 sub           length        subtract length from the accumulator
+D01D     011                 jmpe          exit1         jump to exit of loop if accumulator is equal to 0 (ChANGE)
+3002     012                 load          i             load i into the accumulator
+5007     013                 add           basePoint     add basePoint to the accumulator
+5005		014					  add				 store			add store instruction to accumulator (CHANGE)
+4017		015					  store			 instr			store accumulator value into instr
+1000		016					  readH								read in a hex digit into the accumulator
+B000		017		instr                                  do nothing
+1800     018                 printH                      print value of accumulator
+3002     019        			  load			 i					load i into the accumulator
+5003     01A         		  add				 one				add one to accumulator
+4002		01B					  store			 i					store value of accumulator into i
+C00G     01C      			  jump          loop1         jump to the start of the loop
+0000     01D      exit1      halt                        exit the loop (CHANGE)
+0000     01E      base       dw             0            declare int base (CHANGE)
+

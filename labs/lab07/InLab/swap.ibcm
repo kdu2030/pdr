@@ -1,0 +1,22 @@
+C00B 000         jmp     start     Jump to the start of the program
+0000 001   zero  dw                Declare int zero as 0
+0001 002   one   dw                Declare int one as 1
+0000 003   temp  dw                Declare int temp as 0
+000B 004   tar1  dw                Declare int tar1 as 11
+000A 005   tar2  dw                Declare int tar2 as 10
+B000 006
+B000 007
+B000 008
+B000 009
+B000 00A
+3004 00B start   load    tar1      Load tar1 into the accumulator
+4003 00C         store   temp      Store accumulator value into temp
+3005 00D         load    tar2      Load tar2 into the accumulator
+4004 00E         store   tar1      Store accumulator value into tar1
+3003 00F         load    temp      Load temp into the accumulator
+4005 010         store   tar2      Store accumulator value into tar2
+3004 011         load    tar1      Load tar1 into accumulator
+1800 012         printH            Print accumulator value
+3005 013         load    tar2      Load tar2 into accumulator
+1800 014         printH            Print accumulator value
+0000 015         halt              Halt execution

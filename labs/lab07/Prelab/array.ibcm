@@ -1,0 +1,62 @@
+C00E 000       jmp start Jump to the start of the program
+0000 001 len   dw    0   declare int length
+0000 002 i     dw    0   declare int i
+0001 003 one   dw    1    declare int one
+0000 004 zero  dw    0   declare int zero
+4000 005 save  dw    4000 declare int save
+3000 006 acce  dw    3000 declare int access
+003C 007 bP    dw    003D declare it basePoint
+B000 008                  do nothing
+B000 009                  do nothing
+B000 00A                  do nothing
+B000 00B                  do nothing
+B000 00C                  do nothing
+B000 00D                  do nothing
+1000 00E start readH      read in a hex digit into accumulator  1. Get length of array
+4001 00F       store len  store accumulator value into length
+3002 010 loop1 load   i   load i into accumulator					  2. Get values in array - loop
+6001 011       sub   len  subtract length from the accumulator
+D01E 012       jmpe exit1 jump to exit of loop if accumulator is equal to 0 (ChANGE)
+3002 013       load   i   load i into the accumulator
+5007 014       add    bP  add basePoint to the accumulator
+5005 015	      add store  add store instruction to accumulator
+4018 016	     store instr store accumulator value into instr
+1000 017      readH		  read in a hex digit into the accumulator
+B000 018		  instr       do nothing
+B000 019                  do nothing
+3002 01A      load   i	  load i into the accumulator
+5003 01B      add   one   add one to accumulator
+4002 01C     store   i	  store value of accumulator into i
+C010 01D     jump   loop1 jump to the start of the loop
+3004 01E     load   zero  exit the loop and load zero into the accumulator
+B000 01F                  do nothing
+4002 020     store   i    store the value of the accumulator into i
+3002 021     load    i    load i into the accumulator
+6001 022     sub    len   subtract length from accumulator
+D02E 023     jmpe  exit2 jump to exit of loop if accumulator is equal to 0
+3002 024     load    i    load i into the accumulator
+5007 025     add     bP   add base pointer to the accumulator
+5006 026     add    acc   add access instruction to the accumulator
+4028 027     store  ins2  store accumulator value into ins2
+B000 028     ins2         do nothing
+1800 029     printH       print value of the accumulator
+3002 02A     load    i    load i into the accumulator
+5003 02B     add     1    add 1 from the accumulator
+4002 02C     store   i    store the value of the accumulator into i
+C021 02D     jmp    021   Jump to the beginning of the loop
+3001 02E     load   len   exit the loop and load the length
+6003 02F     sub    one   subtract 1 from the accumulator
+4002 030    store   i    store the value of the accumulator into i
+3002 031    load    i    load i into the accumulator
+E03C 032     jmpl  exit2 jump to exit of loop if accumulator is less than 0
+5007 033     add     bP   add base pointer to the accumulator
+5006 034     add    acc   add access instruction to the accumulator
+4036 035     store  ins2  store accumulator value into ins3
+B000 036 ins3             do nothing
+1800 037     printH       print value of the accumulator
+3002 038     load    i    load i into the accumulator
+6003 039     sub     1    subtract 1 from the accumulator
+4002 03A     store   i    store the value of the accumulator into i
+C031 03B     jmp         Jump to the beginning of the loop
+0000 03C exit3 halt       Halt, exit the loop
+0000 03D base  dw    0    declare int base

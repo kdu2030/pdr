@@ -1,0 +1,76 @@
+C010 000          jmp          Jump to start of program
+000A 001   len    dw    10     Declare int len as 10
+0000 002    i     dw    1      Declare int i as 0
+0009 003    j     dw    0      Declare int j as 9
+0042 004   base   dw    0      Declare int base as ~ (to be set at end of the program)
+0000 005   temp   dw    0      Declare int temp as 0
+3000 006   load   dw   3000    Declare int load as 3000
+6000 007   sub    dw   6000    Declare int sub as 6000
+4000 008  store   dw   4000    Declare int store as 4000
+0001 00A   one    dw     1     Declare int one as 1
+0009 00B   init   dw     9    Declare int init as 9
+B000 00C                       Do nothing
+B000 00D                       Do nothing
+B000 00E                       Do nothing
+B000 00F                       Do nothing
+B000 00F                       Do nothing
+B000 00F                       Do nothing
+3001 010  start  load  len     Load len into the accumulator [Beginning of outer for loop]
+6002 011         sub   i       Subtract i from the accumulator
+D048 012         jumpe exit1   Jump to exit if the accumulator == 0 (i.e. i == len)
+3003 013  loop1  load  j     	 Load j into the accumulator [Beginning of inner for loop]
+6002 014         sub   i       Subtract i from the accumulator
+D042 015         jmpe  exit2   jump to exit2 if the accumulator == 0 (i.e. i == j)
+3003 016         load   j      Load j into the accumulator
+5004 017         add   base    Add base to accumulator
+4005 018         store  temp   Store accumulator value into temp (base + index)
+5006 019         add   load    Add load instruction to accumulator
+402F 020         store         Store load a[j] instruction in blank spot
+3005 021         load  temp    Load temp (base + index) into accumulator
+5008 022         add  store    Add store instruction to accumulator
+403E 023         store         Store store instruction in blank spot a[j]
+3005 024         load   temp   Load temp into the accumulator
+6001 025         sub    one    Subtract one from the accumulator
+4005 026         store  temp   Store accumulator into temp
+5006 027         add    load   Add load instruction to accumulator
+403D 028         store         Store load instruction in blank spot a[j-1]
+3003 029         load   temp   Load temp into the accumulator
+5007 02A         add    sub    Add subtraction instruction to accumulator
+402D 02B         store         Store subtraction instruction in blank spot
+3003 02C         load   temp   Load temp into the accumulator
+5008 02D         add    store  Add store instruction to accumulator
+4040 02E         store         Store store instruction in blank spot a[j-1]
+B000 02F                       Blank for loading a[j]
+B000 030                       Blank for subtracting a[j-1]
+B000 031
+B000 032
+B000 033
+E036 034         jumpe         If accumulator is less than 0, then jump to if statement content. If a[j-1] > a[j]
+3003 035         load   j      Load j into the accumulator
+6007 036         sub    one    Subtract one from the accumulator
+4003 037         store   j     Store the value of the accumulator(j)
+C013 038          jmp   013    Jump to the beginning of the inner for loop [End of inner  for loop]
+302C 039                       Load instruction for loading a[j] into accumulator [Swapping]
+4036 03A                       Store load instruction for loading a[j] into accumulator
+B000 03B                       Blank for loading a[j]
+4005 03C        store   temp  Store accumulator value into temp
+B000 03D                       Blank for loading a[j-1] (at 025)
+B000 03E                       Blank for storing a[j] (at 020)
+3005 03F         load temp     Load temp into accumulator
+B000 040                       Blank for storing temp into a[j-1] (at 2B)
+C032 041         jump 032      Jump to the code after if statement
+3002 042         load i        Load i into accumulator [End of inner for loop]
+500A 043         add  one      Add one ot the accumulator
+4002 044         store i       Store i into the accumulator
+300B 045         load init     Load init into the accumulator
+4003 046         store j       Store accumulator into j (resets j)         
+C010 047         jump start    Jump to the start of the outer for loop
+0000 048         halt          Halt execution!
+
+
+
+
+
+
+
+

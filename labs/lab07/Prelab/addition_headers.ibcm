@@ -1,0 +1,31 @@
+mem   locn   label      op         addr          comments
+
+C008  000              jmp          8            Jump to start to skip variable declarations
+0000  001     num1     dw           0            declare int num1
+0000  002     num2     dw           0            declare int num2
+0000  003     num3     dw           0            declare int num3
+0000  004     result   dw           0            declare int result
+B000  005                                        do nothing
+B000  006                                        do nothing
+B000  007                                        do nothing
+1000  008    start    readH                      read in a hex digit
+4001  009             store        num1          store accumulator value into memory spot num1
+1000  00A             readH                      read in a hex digit
+4002  00B             store        num2          store accumulator value into memory spot num2
+1000  00C             readH                      read in a hex digit
+4003  00D             store        num3          store accumulator value into memory spot num3
+3001  00E             load         num1          load num1 into accumulator
+5002  00F             add          num2          add value of num2 into accumulator
+5003  010             add          num3          add value of num3 into accumulator
+4004  011             store        result        store accumulator value into result
+3004  012             load         result        load result into accumulator
+1800  013             printH                     print value of accumulator to screen (hex)
+D016  014             jmpe                       Jump to exit value is equal to 0
+C008  015             jmp          start         Jump to start if the value not equal to 0
+3001  016    exit     load         num1          Load num1 into accumulator
+1800  017             printH                     Print value of accumulator to screen
+3002  018             load         num2          Load num2 into accumulator
+1800  019             printH                     Print value of accumulator to screen
+3003  01A             load         num3          Load num3 into accumulator
+1800  01B             printH                     Print value of accumulator to screen
+0000  01C             halt                       Halt
