@@ -14,12 +14,11 @@ int main(){
 	int n = 0;
 	int numTimes = 0;
 	int result = 0;
-	cout << threexplusone(9);
-	//cout << "Enter a number: ";
-	//cin >> n;
+	cout << "Enter a number: ";
+	cin >> n;
 	//cout << "Enter iterations of subroutine: ";
 	//cin >> numTimes;
-	//result = threexplusone(n);
-	//cout << result;
+	result = threexplusone(n);
+	cout << result << endl;
 	return 0;
 }
