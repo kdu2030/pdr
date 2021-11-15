@@ -9,21 +9,54 @@
 	section .text
 
 
-; Parameter 1 is a pointer to the int array 
-; Parameter 2 is the left index in the array 
-; Parameter 3 is the right index in the array
+; Parameter 1 is a pointer to the int array - rdi 
+; Parameter 2 is the left index in the array  - rsi
+; Parameter 3 is the right index in the array - rdx
 ; Return type is void 
+; Bit shifting - https://en.wikibooks.org/wiki/X86_Assembly/Shift_and_Rotate 
 mergeSort:
-
-	; Implement mergeSort here
+	xor r10, r10		; zero out r10
+		
+	cmp rsi, rdx		; Jump to end if left >= right (only one element)
+	jge end
 	
+	add r10, rsi		; int mid = (left+right)/2
+	add r10, rdx
+	sar r10, 1		; bit shift to the right
+	
+	push rsi
+	push rdx
+	push r10
+	
+	pop r10			;get mid
+	mov rdx, r10		;mergeSort(A, left, mid)
+	pop r11			;pop and store right into r11
+	pop rsi
+	push rsi
+	push r11
+	push r10		;push mid back onto the stack
+	call mergeSort
+				;mergeSort(A, mid+1, right);
+	pop rsi			;get mid
+	pop rdx			;get right
+	push rdx		;push it back to the stack
+	push rsi		;push it back to the stack
+	inc rsi
+	call mergeSort
+		
+	
+	pop rdx			;Get mid			
+	pop rcx			;Get right
+	pop rsi			;Get left
+	call merge
+end:
+	ret
 
 
-
-; Parameter 1 is a pointer to the int array 
-; Parameter 2 is the left index in the array
-; Parameter 3 is the middle index in the array 
-; Parameter 4 is the right index in the array
+; Parameter 1 is a pointer to the int array - rdi
+; Parameter 2 is the left index in the array - rsi
+; Parameter 3 is the middle index in the array -rdx
+; Parameter 4 is the right index in the array - rcx
 ; Return type is void 
 merge:
 	; Save callee-save registers
@@ -129,3 +162,4 @@ endR:
 	pop r12
 	pop rbx
 	ret
+
