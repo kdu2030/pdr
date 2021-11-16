@@ -8,17 +8,22 @@
 #include <iostream>
 using namespace std;
 
-extern "C" int threexplusone(int n);
+extern "C" int threexplusone(int x);
 
 int main(){
-	int n = 0;
+	int x = 0;
 	int numTimes = 0;
 	int result = 0;
+	
 	cout << "Enter a number: ";
-	cin >> n;
-	//cout << "Enter iterations of subroutine: ";
-	//cin >> numTimes;
-	result = threexplusone(n);
-	cout << result << endl;
+	cin >> x;
+	cout << "Enter iterations of subroutine: ";
+	cin >> numTimes;
+	
+	result = threexplusone(x);
+	for(int i = 0; i < numTimes; i++){
+		threexplusone(x);
+	}
+	cout << "Steps: " << result << endl;
 	return 0;
 }
