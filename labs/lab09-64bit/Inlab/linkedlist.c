@@ -30,6 +30,7 @@ int main(){
 	// TODO: INSTANTIATE YOUR LINKED LIST HERE.
 	typedef struct list_item{
 		struct list_item* next;
+		struct list_item* prev;
 		int value;	
 	}ListNode;
 	
@@ -46,11 +47,16 @@ int main(){
 		return 0;	
 	}
 	
-	list->head = NULL;
-	list->tail = NULL;
+	list->head = (ListNode*)(malloc(sizeof(ListNode)));
+	list->tail = (ListNode*)(malloc(sizeof(ListNode)));
+	
+	list->head->next = list->tail;
+	list->head->prev = NULL;
+	list->tail->next = NULL;
+	list->tail->prev = list->head;
+	
 	list->size = 0;
 
-	//TODO initialize the fields of list
 
 	//----END----
 	
@@ -65,27 +71,56 @@ int main(){
 		switch(option){
 			case PUSH_FRONT:				// push onto front of list
 				// TODO: Insert code to push val onto front of linked list here
-				int i = 0;
+				
+				node = (ListNode*)(malloc(sizeof(ListNode)));
+				node->value = val;
+				//Set the node's next pointer to item 1 (old item 0)
+				node->next = list->head->next;
+				//Set the node's previous pointer to head
+				node->prev = list->head;
+				//Set item 1's previous pointer to the new node
+				list->head->next->prev = node;
+				//Set head's next pointer to the new node
+				list->head->next = node;
+				//Increment size
+				list->size++;
+				
 				//----END----
 				break;
 			case PUSH_BACK: 				// push onto back of list
 				// TODO: Insert code to push val onto back of linked list here.
-				
-
+				node = (ListNode*)(malloc(sizeof(ListNode)));
+				node->value = val;
+				node->next = list->tail;
+				node->prev = list->tail->prev;
+				list->tail->prev->next = node;
+				list->tail->prev = node;	
+				list->size++;
 				//----END----
 				break;
 			case POP_FRONT: 				// remove from front of list
 				// TODO: Insert code to remove from front of linked list here.
 				// If list is empty, do nothing.
-
+				if(list->size != 0){
+					node = list->head->next;
+					node->next->prev = list->head;
+					list->head->next = node->next;
+					list->size--;
+					free(node);
+				}
 
 				//----END----
 				break;
 			case POP_BACK:					// remove from back of list
 				// TODO: Insert code to remove from back of linked list here.
 				// If list is empty, do nothing.
-				
-
+				if(list->size != 0){
+					node = list->tail->prev;
+					node->prev->next = list->tail;
+					list->tail->prev = node->prev;
+					list->size--;
+					free(node);
+				}	
 				//----END----
 				break;
 			case PRINT_LIST:				// print list
@@ -93,7 +128,12 @@ int main(){
 				// Simply print each element separated by a space as shown below:
 				// Elements: 1 2 3 4 5 
 				printf("Elements: ");
-
+				node = list->head->next;
+				while(node->next != NULL){
+					printf("%d ", node->value);
+					node = node->next;
+				}
+				printf("\n");
 
 				//----END----
 				break;
@@ -110,7 +150,7 @@ int main(){
 	} while(option != QUIT);
 
 	// TODO: free any memory used by your linked list here
-	
+	free(list);	
 
 	//----END----
 
