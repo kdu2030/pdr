@@ -23,6 +23,11 @@ HuffNode::HuffNode(char val, int frequency){
 
 }
 
+HuffNode::~HuffNode(){
+	delete left;
+	delete right;
+}
+
 char HuffNode::getValue(){
  	return value;
 }

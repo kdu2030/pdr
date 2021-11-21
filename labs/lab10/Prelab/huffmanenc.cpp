@@ -4,12 +4,13 @@
  *ID: kd5eyn
  *Filename: huffmanenc.cpp
  */
-//https://www2.cs.duke.edu/csed/poop/huff/info/
-
+//Printing out prefix codes - https://www2.cs.duke.edu/csed/poop/huff/info/
+//Setting decimal precision - https://stackoverflow.com/questions/5907031/printing-the-correct-number-of-decimal-points-with-cout
 #include <map>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "HuffNode.h"
 #include "heap.h"
 
@@ -88,9 +89,52 @@ void getPrefixes(HuffNode* node, map<char, string>& prefixes, string path){
 
 void printPrefix(map<char, string>& prefixes){
 	for(map<char, string>::iterator i = prefixes.begin(); i != prefixes.end(); i++){
-		cout << i->first << ": " << i->second << endl;
+		if(i->first == ' '){
+			cout << "space" << " " << i->second << endl;
+		}
+		else{
+			cout << i->first << " " << i->second << endl;
+		}
 	}
 }
+
+
+void printEnc(map<char, string>& prefixes, string path){
+	printPrefix(prefixes);
+	cout << "----------------------------------------" << endl;
+
+	unsigned int length = 0;
+	unsigned int encTotal = 0;
+
+	ifstream file(path);
+	if(!file.is_open()){
+		return;
+	}
+
+	char letter;
+	while(file.get(letter)){
+		if(prefixes.find(letter) != prefixes.end()){
+			cout << prefixes[letter] << " ";
+			encTotal += prefixes[letter].length();
+			length++;
+		}
+	}
+	cout << endl;
+
+	cout << "----------------------------------------" << endl;
+
+	setprecision(5);
+
+	cout << "There are a total of " << length << " symbols that are encoded." << endl;
+	cout << "There are " << prefixes.size() << " distinct symbols used." << endl;
+	cout << "There were " << length * 8 << " bits in the original file." << endl;
+	cout << "There were " << encTotal << " bits  in the compressed file." << endl;
+	cout << "This gives a compression ratio of " << (length*8.0) / encTotal << "." << endl;
+	cout << "The cost of the Huffman tree is " << encTotal/float(length) << " bits per character."<< endl;
+	
+}
+
+
 
 
 
@@ -101,12 +145,11 @@ int main(int argc, char* argv[]){
 	}
 	string path = argv[1];
 	map<char, int> freq;
-	cout << argv[1] << endl;
 	getFreq(freq, argv[1]);
 	HuffNode* tree = getHuffTree(freq);
 	map<char, string> prefixes;
-	getPrefixes(tree, prefixes, i);
-	printPrefix(prefixes);
+	getPrefixes(tree, prefixes, "");
+	printEnc(prefixes, argv[1]);
 	return 0;
 
 }
