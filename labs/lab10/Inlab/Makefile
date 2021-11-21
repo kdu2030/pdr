@@ -1,6 +1,6 @@
 CXX = clang++
 
-CXXFLAGS = -Wall -g
+CXXFLAGS = -Wall -g -fstandalone-debug
 
 OBJECTS = HuffNode.o huffmandec.o
    

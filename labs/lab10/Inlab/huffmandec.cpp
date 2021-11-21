@@ -16,13 +16,24 @@
 
 using namespace std;
 
+void createNode(HuffNode* node, string target, string prefix);
+
+HuffNode* getPreTree(map<string, string>& prefixes){
+	HuffNode* tree = new HuffNode();
+	//Go through the entire tree, calling createNode for each distinct character that was encoded
+	for(map<string, string>::iterator i = prefixes.begin(); i != prefixes.end(); i++){
+		createNode(tree, i->first, i->second);
+	}
+	return tree;
+}
 
 void createNode(HuffNode* node, string target, string prefix){
+	HuffNode* created;
+	//Left = prefix code of 0 Right = prefix code of 1
 	if(prefix.at(0) == '0' && node->getLeft() != NULL){
 		createNode(node->getLeft(), target, prefix.substr(1, prefix.length()-1));
 	}
 	else if(prefix.at(0) == '0' && node->getLeft() == NULL){
-		HuffNode* created;
 		//If the prefix.length() == 1, that means we need to add a new leaf node
 		if(prefix.length() == 1){
 			created = new HuffNode(target, 0);
@@ -31,13 +42,13 @@ void createNode(HuffNode* node, string target, string prefix){
 		}
 		created = new HuffNode();
 		node->setLeftChild(created);
+		//Gets rid of the first digit in prefix
 		createNode(node->getLeft(), target, prefix.substr(1, prefix.length()-1));
 	}
 	else if(prefix.at(0) == '1' && node->getRight() != NULL){
 		createNode(node->getRight(), target, prefix.substr(1, prefix.length()-1));
 	}
 	else if(prefix.at(0) == '1' && node->getRight() == NULL){
-		HuffNode* created;
 		if(prefix.length() == 1){
 			created = new HuffNode(target, 0);
 			node->setRightChild(created);
@@ -90,6 +101,8 @@ int main(int argc, char* argv[]){
 		prefixes[character] = prefix;
 		cout << "character '" << character << "' has prefix code '" << prefix << "'" << endl;
 	}
+
+	HuffNode* tree = getPreTree(prefixes);
 
 	// read in the second section of the file: the encoded message
 	stringstream sstm;
