@@ -58,7 +58,19 @@ void createNode(HuffNode* node, string target, string prefix){
 		node->setRightChild(created);
 		createNode(node->getRight(), target, prefix.substr(1, prefix.length()-1));
 	}
+}
+
+string decode(HuffNode* node, string prefix){
+	//If we reached a leaf node, then we hit a letter
+	if(node->getLeft() == NULL && node->getRight() == NULL){
+		return node->getValue();
+	}
 	
+	if(prefix.at(0) == '0'){
+		return decode(node->getLeft(), prefix.substr(1, prefix.length()-1));
+	}
+	return decode(node->getRight(), prefix.substr(1, prefix.length()-1));
+
 }
 
 int main(int argc, char* argv[]){
@@ -99,7 +111,7 @@ int main(int argc, char* argv[]){
 		file >> prefix;
 		// do something with the prefix code
 		prefixes[character] = prefix;
-		cout << "character '" << character << "' has prefix code '" << prefix << "'" << endl;
+		//cout << "character '" << character << "' has prefix code '" << prefix << "'" << endl;
 	}
 
 	HuffNode* tree = getPreTree(prefixes);
@@ -116,7 +128,10 @@ int main(int argc, char* argv[]){
 		}
 		// add it to the stringstream
 		sstm << bits;
+		string letter = decode(tree, bits);
+		cout << letter;
 	}
+	cout << endl;
 	return 0;
 
 }
