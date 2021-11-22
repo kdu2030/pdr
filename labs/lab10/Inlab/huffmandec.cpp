@@ -5,6 +5,9 @@
  *Filename: huffmandec.cpp
  */
 
+//strings - https://en.cppreference.com/w/cpp/string/basic_string/substr
+//at - https://en.cppreference.com/w/cpp/string/basic_string/at
+
 #include <map>
 #include <fstream>
 #include <sstream>

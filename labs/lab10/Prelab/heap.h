@@ -6,6 +6,8 @@
 #include "HuffNode.h"
 using namespace std;
 
+//Used heap code from slides 10-heaps-huffman.html
+
 class binary_heap {
 	public:
 		binary_heap();

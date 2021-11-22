@@ -6,6 +6,7 @@
  */
 //Printing out prefix codes - https://www2.cs.duke.edu/csed/poop/huff/info/
 //Setting decimal precision - https://stackoverflow.com/questions/5907031/printing-the-correct-number-of-decimal-points-with-cout
+//STL Map - https://en.cppreference.com/w/cpp/container/map
 #include <map>
 #include <vector>
 #include <iostream>
